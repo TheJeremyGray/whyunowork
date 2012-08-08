@@ -42,15 +42,6 @@ namespace ConsoleApplication6
             {
                 var r3 = web_proxy.EGUSParty(web_reference_request);
             }
-       
-
-            //EgusReference.EGUSReference r = new EgusReference.EGUSReference() { Url = url, Credentials = MyNetworkCredential, PreAuthenticate = true, UnsafeAuthenticatedConnectionSharing = true };
-
-            //
-            //var r3 = r.EGUSParty(r2);
-
-            //r.Dispose();
-
         }
     }
 }
