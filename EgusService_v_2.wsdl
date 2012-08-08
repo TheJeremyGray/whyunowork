@@ -1,0 +1,636 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:common="http://www.markitserv.com/2012/EGUS-COMMON-2-0"
+	xmlns:agrDetails="http://www.markitserv.com/2012/EGUS-AD-2-0" 
+	xmlns:tns="http://www.markit.com/EGUS/"	
+	name="http://www.markit.com/EGUS/"
+	targetNamespace="http://www.markit.com/EGUS/">
+	<wsdl:types>
+	
+		<xsd:schema targetNamespace="http://www.markit.com/EGUS/">
+			<!-- Agreement Updates Feed-->	
+			<xsd:element name="EGUSAgreementUpdatesRequest">
+				<xsd:complexType>
+					<xsd:sequence maxOccurs="1" minOccurs="1">
+						<xsd:element name="fromDate" 	type="xsd:dateTime"		maxOccurs="1" minOccurs="1"/>
+						<xsd:element name="toDate" 		type="xsd:dateTime"		maxOccurs="1" minOccurs="1"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="EGUSAgreementUpdatesResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="Agreement" type="tns:Agreement" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+					<xsd:attribute 	name="fromDate" 		type="xsd:dateTime" use="required"/>
+					<xsd:attribute  name="toDate" 			type="xsd:dateTime" use="required"/>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<xsd:complexType name="Agreement">
+				<xsd:sequence>
+					<xsd:element name="UpdateDate" type="xsd:dateTime" minOccurs="1" maxOccurs="1" />
+					<xsd:element name="EffectiveDate" type="xsd:dateTime" minOccurs="1" maxOccurs="1" />
+					<xsd:element name="TerminationDate" type="xsd:dateTime" minOccurs="0" maxOccurs="1" />
+				</xsd:sequence>
+				<xsd:attribute name="AgreementId" type="xsd:int" use="required">
+				<xsd:annotation>
+						<xsd:appinfo>
+							<xcm isId="true" />
+						</xsd:appinfo>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:complexType>
+			
+			<!-- Egus Exchange Reference Feed-->
+			<xsd:element name="EGUSExchangeRequest">
+				<xsd:complexType>
+					<xsd:choice>
+						<xsd:sequence maxOccurs="1" minOccurs="0">
+							<xsd:element name="fromDate" type="xsd:dateTime"	maxOccurs="1" minOccurs="1"/>
+							<xsd:element name="toDate" 	 type="xsd:dateTime"	maxOccurs="1" minOccurs="1"/>
+						</xsd:sequence>
+						<xsd:sequence maxOccurs="1" minOccurs="0">
+							<xsd:element name="Code" type="xsd:string"			maxOccurs="unbounded" minOccurs="1"/>
+						</xsd:sequence>
+					</xsd:choice>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="EGUSExchangeResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="EGUSExchange" type="tns:EGUSExchange" minOccurs="0" maxOccurs="unbounded"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<xsd:complexType name="EGUSExchange">
+				<xsd:sequence>
+					<xsd:element name="Name" 			type="xsd:string" 	minOccurs="1" maxOccurs="1" />
+					<xsd:element name="CreationDate" 	type="xsd:dateTime" minOccurs="1" maxOccurs="1" />
+					<xsd:element name="UpdateDate" 		type="xsd:dateTime" minOccurs="1" maxOccurs="1" />
+				</xsd:sequence>
+				<xsd:attribute name="Code" type="xsd:string" use="required">
+					<xsd:annotation>
+						<xsd:appinfo>
+							<xcm isId="true" />
+						</xsd:appinfo>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:complexType>
+
+
+			<!-- EGUS Exchange Product Group Reference Feed -->
+
+			<xsd:element name="EGUSExchangeProductGroupRequest">
+				<xsd:complexType>
+					<xsd:choice>
+						<xsd:sequence maxOccurs="1" minOccurs="0">
+							<xsd:element name="fromDate" type="xsd:dateTime"	maxOccurs="1" minOccurs="1"/>
+							<xsd:element name="toDate" 	 type="xsd:dateTime"	maxOccurs="1" minOccurs="1"/>
+						</xsd:sequence>
+						<xsd:sequence maxOccurs="1" minOccurs="0">
+							<xsd:element name="ExchangeCode" type="xsd:string"	maxOccurs="unbounded" minOccurs="1"/>
+						</xsd:sequence>
+					</xsd:choice>
+				</xsd:complexType>
+			</xsd:element>	
+
+			<xsd:element name="EGUSExchangeProductGroupResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="EGUSExchangeProductGroup" type="tns:EGUSExchangeProductGroup" minOccurs="0" maxOccurs="unbounded"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<xsd:complexType name="EGUSExchangeProductGroup">
+				<xsd:sequence>
+					<xsd:element name="ProductGroup" 	type="tns:ProductGroup" minOccurs="1" maxOccurs="unbounded"  />
+				</xsd:sequence>
+				<xsd:attribute name="ExchangeCode" 		type="xsd:string" 	use="required">
+				</xsd:attribute>
+			</xsd:complexType>
+
+			<xsd:complexType name="ProductGroup">
+				<xsd:sequence>
+					<xsd:element name="ProductGroupName" type="xsd:string" 	minOccurs="1" maxOccurs="1" />
+					<xsd:element name="Product" 		 type="tns:Product" 	minOccurs="1" maxOccurs="unbounded"  />
+				</xsd:sequence>
+				<xsd:attribute name="ProductGroupCode" type="xsd:string" use="required">
+				</xsd:attribute>
+			</xsd:complexType>
+			
+			<xsd:complexType name="Product">
+				<xsd:sequence>
+					<xsd:element name="ProductName" 	type="xsd:string" 	minOccurs="1" maxOccurs="1" />
+					<xsd:element name="CreationDate" 	type="xsd:dateTime" minOccurs="1" maxOccurs="1" />
+					<xsd:element name="UpdateDate" 		type="xsd:dateTime" minOccurs="1" maxOccurs="1" />
+				</xsd:sequence>
+				<xsd:attribute name="ProductCode" type="xsd:string" use="required"/>
+				<xsd:attribute name="ProductType" type="xsd:string" use="required"/>
+			</xsd:complexType>
+			
+			<!-- EGUS Party Reference Feed -->
+
+			<xsd:element name="EGUSPartyRequest">
+				<xsd:complexType>
+					<xsd:choice>
+						<xsd:sequence maxOccurs="1" minOccurs="0">
+							<xsd:element name="fromDate" type="xsd:dateTime"	maxOccurs="1" minOccurs="1"/>
+							<xsd:element name="toDate" 	 type="xsd:dateTime"	maxOccurs="1" minOccurs="1"/>
+						</xsd:sequence>
+						<xsd:sequence maxOccurs="1" minOccurs="0">
+							<xsd:element name="PartyCode" type="xsd:string"		maxOccurs="unbounded" minOccurs="1"/>
+						</xsd:sequence>
+					</xsd:choice>
+				</xsd:complexType>
+			</xsd:element>	
+
+			<xsd:element name="EGUSPartyResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="EGUSParty" type="tns:EGUSParty"	minOccurs="0"	maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:complexType name="EGUSParty">
+				<xsd:sequence>
+					<xsd:element name="Name" 			type="xsd:string"	minOccurs="1" maxOccurs="1" />
+					<xsd:element name="CreationDate" 	type="xsd:dateTime"	minOccurs="1" maxOccurs="1" />
+					<xsd:element name="UpdateDate" 		type="xsd:dateTime"	minOccurs="1" maxOccurs="1" />
+				</xsd:sequence>
+				<xsd:attribute name="PartyCode" type="xsd:string" use="required">
+				</xsd:attribute>
+			</xsd:complexType>
+				
+			<!-- EGUS Exchange Firm Reference Feed -->
+			
+			<xsd:element name="EGUSExchangeFirmRequest">
+				<xsd:complexType>
+					<xsd:choice>
+						<xsd:sequence maxOccurs="1" minOccurs="0">
+							<xsd:element name="fromDate" type="xsd:dateTime"	maxOccurs="1" minOccurs="1"/>
+							<xsd:element name="toDate"   type="xsd:dateTime"	maxOccurs="1" minOccurs="1"/>
+						</xsd:sequence>
+						<xsd:sequence maxOccurs="1" minOccurs="0">
+							<xsd:element name="PartyCode" type="xsd:string"		maxOccurs="unbounded" minOccurs="1"/>
+						</xsd:sequence>
+					</xsd:choice>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="EGUSExchangeFirmResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="EGUSExchangeFirm" type="tns:EGUSExchangeFirm" minOccurs="0"	maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<xsd:complexType name="EGUSExchangeFirm">
+				<xsd:sequence>
+					<xsd:element name="Firm" 	type="tns:Firm" minOccurs="1" maxOccurs="unbounded"  />
+				</xsd:sequence>
+				<xsd:attribute 	name="PartyCode" type="xsd:string" use="required"/>
+			</xsd:complexType>
+
+			<xsd:complexType name="Firm">
+				<xsd:sequence>
+					<xsd:element name="FirmCode" 		type="xsd:string" 	minOccurs="1" maxOccurs="1" />
+					<xsd:element name="CreationDate" 	type="xsd:dateTime" minOccurs="1" maxOccurs="1" />
+					<xsd:element name="UpdateDate" 		type="xsd:dateTime" minOccurs="1" maxOccurs="1" />
+					<xsd:element name="PrimaryFlag" 	type="xsd:string" 	minOccurs="1" maxOccurs="1" />											
+				</xsd:sequence>
+				<xsd:attribute name="ExchangeCode" 		type="xsd:string" 	use="required">
+				</xsd:attribute>
+			</xsd:complexType>
+		</xsd:schema>
+		
+		<xsd:schema targetNamespace="http://www.markitserv.com/2012/EGUS-AD-2-0">
+				<!--  Agreement Details Request  -->
+			<xsd:element name="EGUSAgreementDetailsRequest">
+				<xsd:complexType>
+					<xsd:choice>
+						<xsd:sequence minOccurs="0"	maxOccurs="1">
+							<xsd:element name="fromDate"	type="xsd:dateTime" minOccurs="1" maxOccurs="1"/>
+							<xsd:element name="toDate" 		type="xsd:dateTime" minOccurs="1" maxOccurs="1"/>
+						</xsd:sequence>
+						<xsd:sequence minOccurs="0" maxOccurs="1">
+							<xsd:element name="agreementId" type="xsd:string" 	minOccurs="1" maxOccurs="1"/>
+						</xsd:sequence>
+					</xsd:choice>
+				</xsd:complexType>
+			</xsd:element>
+				
+			<!--  Agreement Details Response  -->	
+			<xsd:element name="EGUSAgreementDetailsResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="AgreementDetails" type="agrDetails:AgreementDetailsType"	minOccurs="0" 		maxOccurs="unbounded" />
+						<xsd:element name="Error" 			 type="common:ErrorType"		minOccurs="0" 		maxOccurs="1" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			
+			<xsd:complexType name="AgreementDetailsType">
+				<xsd:all>
+					<xsd:element name="CustomerReference" 	type="xsd:string" 	minOccurs="1" 	maxOccurs="1"/>
+					<xsd:element name="AgreementType" 		type="xsd:string" 	minOccurs="1" 	maxOccurs="1"/>
+					<xsd:element name="Status" 				type="xsd:string" 	minOccurs="1" 	maxOccurs="1"/>
+					<xsd:element name="CreationDate" 		type="xsd:dateTime" minOccurs="1" 	maxOccurs="1"/>
+					<xsd:element name="ApprovalDate" 		type="xsd:dateTime" minOccurs="1" 	maxOccurs="1"/>
+					<xsd:element name="UpdateDate" 			type="xsd:dateTime" minOccurs="1" 	maxOccurs="1"/>
+					<xsd:element name="EffectiveDate" 		type="xsd:dateTime" minOccurs="1" 	maxOccurs="1"/>
+					<xsd:element name="TerminationDate" 	type="xsd:dateTime" nillable="true" minOccurs="0" maxOccurs="1" /> 
+					<xsd:element name="BillWho" 			type="agrDetails:BillWhoEnum" 	minOccurs="1" 	maxOccurs="1"/>
+					<xsd:element name="ProfitCenter" 		type="xsd:string" 	minOccurs="0" 	maxOccurs="1"/>
+					<xsd:element name="Parties" 			type="agrDetails:PartiesType" 	minOccurs="1" 	maxOccurs="1"/>
+					<xsd:element name="ClearingAccounts"	type="agrDetails:ClearingAccountsType" minOccurs="1" maxOccurs="1"/>
+					<xsd:element name="RateSchedules" 		type="agrDetails:RateSchedulesType" 	minOccurs="0" maxOccurs="1"/>
+				</xsd:all>
+				<xsd:attribute name="AgreementId" 		type="xsd:string" 			use="required"/>
+				<xsd:attribute name="GroupId" 			type="xsd:string" 			use="required"/>
+				<xsd:attribute name="PriorAgreementID" 	type="xsd:string" 			use="optional"/>
+				<xsd:attribute name="NewOrChange" 		type="agrDetails:NewOrChangeEnum" 		use="optional"	default="new" />
+			</xsd:complexType>
+
+			<xsd:complexType name="PartiesType">
+				<xsd:sequence>
+					<xsd:element name="Party" minOccurs="1" maxOccurs="unbounded">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="Name" type="xsd:string" 		minOccurs="1" maxOccurs="1" />
+								<xsd:element name="Type" type="agrDetails:PartyTypeEnum" 	minOccurs="1" maxOccurs="1" />
+								<xsd:element name="ExchangeFirmCode" type="agrDetails:ExchangeFirmCodeType" minOccurs="0" maxOccurs="unbounded" />
+							</xsd:sequence>
+							<xsd:attribute name="Code" type="xsd:string" use="required"/>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="ExchangeFirmCodeType">
+				<xsd:simpleContent>
+					<xsd:extension base="xsd:string">
+						<xsd:attribute name="ExchangeCode" type="xsd:string" use="required"/>
+					</xsd:extension>
+				</xsd:simpleContent>
+			</xsd:complexType>
+
+			<xsd:complexType name="RateSchedulesType">
+				<xsd:sequence>
+					<xsd:element name="RateSchedule" 	type="agrDetails:RateScheduleType"		minOccurs="1" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="RateScheduleType">
+				<xsd:sequence>
+					<xsd:element name="ExecutingAccounts" 	type="agrDetails:ExecutingAccountsType" 	minOccurs="0" maxOccurs="1" />
+					<xsd:element name="Exchanges" 			type="agrDetails:ExchangesType" 			minOccurs="0" maxOccurs="1" />
+				</xsd:sequence>
+				<xsd:attribute name="RateScheduleId" type="xsd:string" use="required"/>
+			</xsd:complexType>
+			
+			<xsd:complexType name="ExchangesType">
+				<xsd:sequence>
+					<xsd:element name="Exchange" type="agrDetails:Exchange" minOccurs="1" maxOccurs="unbounded" />
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="Exchange">
+				<xsd:sequence>
+					<xsd:element name="Rate" 		type="common:RateType" minOccurs="1" maxOccurs="unbounded" />
+				</xsd:sequence>
+				<xsd:attribute 	name="ExchangeCode" type="xsd:string" 	use="required"/>
+				<xsd:attribute 	name="DirectBill" 	type="common:YesNoEnum" 	use="required"/>
+			</xsd:complexType>
+
+			<xsd:complexType name="ExecutingAccountsType">
+				<xsd:sequence>
+					<xsd:element name="Account" type="agrDetails:AccountType" minOccurs="0" maxOccurs="unbounded" />
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="ClearingAccountsType">
+				<xsd:sequence>
+					<xsd:element name="Account" type="agrDetails:AccountType" minOccurs="0" maxOccurs="unbounded" />
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="AccountType">
+				<xsd:sequence>
+					<xsd:element name="Description" 			type="xsd:string" 	minOccurs="0" maxOccurs="1" nillable="true" />
+					<xsd:element name="EffectiveDate" 			type="xsd:dateTime" minOccurs="0" maxOccurs="1" />
+					<xsd:element name="ExpirationDate" 			type="xsd:dateTime" minOccurs="0" maxOccurs="1" nillable="true" />
+					<xsd:element name="LinkedToClearingAccount" type="xsd:string" 	minOccurs="0" maxOccurs="unbounded" />
+				</xsd:sequence>
+				<xsd:attribute 	 name="Id" type="xsd:string" use="required"/>
+			</xsd:complexType>
+
+			<!-- Definition of SimpleTypes -->
+
+			<xsd:simpleType name="BillWhoEnum">
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="Clearing Broker" />
+					<xsd:enumeration value="Customer" />
+					<xsd:enumeration value="Trader" />
+				</xsd:restriction>
+			</xsd:simpleType>
+			
+			<xsd:simpleType name="NewOrChangeEnum">
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="new" />
+					<xsd:enumeration value="change" />
+				</xsd:restriction>
+			</xsd:simpleType>
+			
+			<xsd:simpleType name="PartyTypeEnum">
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="Clearing Broker" />
+					<xsd:enumeration value="Executing Broker" />
+					<xsd:enumeration value="Trader" />
+					<xsd:enumeration value="Customer" />
+					<xsd:enumeration value="Carrying Broker" />
+					<xsd:enumeration value="LME Executing Member" />
+					<xsd:enumeration value="Additional Trader" />
+					<xsd:enumeration value="Order Passing Broker (aka: Order Placement Agent)" />
+					<xsd:enumeration value="Clearing Administrative Clearer" />
+					<xsd:enumeration value="Executing Administrative Clearer" />
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:schema>
+		
+		<xsd:schema targetNamespace="http://www.markitserv.com/2012/EGUS-COMMON-2-0">
+			<xsd:complexType name="RateType">
+				<xsd:sequence>
+					<xsd:element name="ProductGroupCode" 	type="xsd:string" 		minOccurs="1" 	maxOccurs="1"/>			
+					<xsd:element name="ProductCode" 		type="xsd:string" 		minOccurs="1" 	maxOccurs="1"/>						
+					<xsd:element name="ProductType" 		type="xsd:string" 		minOccurs="1" 	maxOccurs="1"/>
+					<xsd:element name="Rank" 				type="xsd:int" 			minOccurs="0" 	maxOccurs="1"/>
+					<xsd:element name="TradeType" 			type="common:TradeTypeEnum" 	minOccurs="1" 	maxOccurs="1"/>
+					<xsd:element name="Spread" 				type="common:SpreadEnum" 		minOccurs="1" 	maxOccurs="1"/>
+					<xsd:element name="RateType" 			type="common:RateTypeEnum" 	minOccurs="1" 	maxOccurs="1"/>
+					<xsd:element name="ExecutionType" 		type="xsd:string" 		minOccurs="1" 	maxOccurs="1"/> <!-- set the type as string so support additional rate types added from admin screen -->
+					<xsd:element name="ExecutionTypeName" 	type="xsd:string" 		minOccurs="0" 	maxOccurs="1"/> <!-- Mandatory for AD and Optional for RU -->
+					<xsd:element name="Amount" 				type="common:RateDecimal" 		minOccurs="0" 	maxOccurs="1"/> <!-- Optional for Vol Disc --> <!-- decided to be decimal-->
+					<xsd:element name="MinAmount" 			type="common:MinMaxDecimal"	minOccurs="0" 	maxOccurs="1"/> <!-- String or decimal ? --> <!-- decided to be decimal-->
+					<xsd:element name="MaxAmount" 			type="common:MinMaxDecimal"	minOccurs="0" 	maxOccurs="1"/>	<!-- String or decimal ? --> <!-- decided to be decimal-->
+					<xsd:element name="RateCurrency" 		type="xsd:string" 		minOccurs="1" 	maxOccurs="1"/> 
+					<xsd:element name="Tiers" 				type="common:TiersType" 		minOccurs="0" 	maxOccurs="1" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="TiersType">
+				<xsd:sequence>
+					<xsd:element name="Tier" type="common:Tier" minOccurs="1" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="Tier">
+				<xsd:sequence>
+					<xsd:element name="Period" 	type="common:PeriodEnum" 	minOccurs="0" maxOccurs="1"/> <!-- Optional for existing Agr. But Mandatory for RU -->
+					<xsd:element name="ApplyTo" type="common:ApplyToEnum" 	minOccurs="0" maxOccurs="1"/> <!-- Optional for existing Agr. But Mandatory for RU -->
+					
+					<!--xsd:element name="StartType" 	type="xsd:string" minOccurs="0" maxOccurs="1"/>  -->
+					<xsd:element name="StartType" 		type="common:StartTypeEnum" 			minOccurs="0" maxOccurs="1"/> <!-- Optional for existing Agr. But Mandatory for RU -->
+					<xsd:element name="StartTypeValue" 	type="common:StartTypeValueDecimal"	minOccurs="0" maxOccurs="1"/> <!-- Optional for existing Agr. But Mandatory for RU --><!--  String or decimal ? --> <!-- decided to be decimal-->
+					<xsd:element name="TierAmount" 		type="common:RateDecimal" 				minOccurs="1" maxOccurs="1"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:simpleType name="TradeTypeEnum">
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value=" "/>
+					<xsd:enumeration value="B"/>
+					<xsd:enumeration value="E"/>
+					<xsd:enumeration value="N"/>
+					<xsd:enumeration value="T"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			
+			<xsd:simpleType name="SpreadEnum">
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value=" " />
+					<xsd:enumeration value="S" />
+					<xsd:enumeration value="6" /> 
+				</xsd:restriction>
+			</xsd:simpleType>
+			
+			<xsd:simpleType name="RateTypeEnum">
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="Rate"/>
+					<xsd:enumeration value="Flat"/>
+					<xsd:enumeration value="Vol Disc"/>
+					<xsd:enumeration value="%Premium"/>
+					<xsd:enumeration value="%Notion"/>			
+				</xsd:restriction>
+			</xsd:simpleType>
+			
+			<xsd:simpleType name="PeriodEnum">
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="Monthly"/>
+					<xsd:enumeration value="Daily"/>
+					<xsd:enumeration value="Trade"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			
+			<xsd:simpleType name="ApplyToEnum">
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="ST"/>
+					<xsd:enumeration value="AT"/>
+				</xsd:restriction>
+			</xsd:simpleType>	
+
+			<xsd:simpleType name="YesNoEnum">
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="yes" />
+					<xsd:enumeration value="no" />
+				</xsd:restriction>
+			</xsd:simpleType>
+			
+			<xsd:simpleType name="StartTypeEnum">
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="Amount" />
+					<xsd:enumeration value="Number" />
+				</xsd:restriction>
+			</xsd:simpleType>
+			
+			<xsd:simpleType name="RateDecimal"> 
+				<xsd:restriction base="xsd:decimal">
+					<xsd:fractionDigits value="5"></xsd:fractionDigits>
+					<xsd:totalDigits value="10"></xsd:totalDigits>
+				</xsd:restriction>
+			</xsd:simpleType>
+			
+			<xsd:simpleType name="MinMaxDecimal">  
+				<xsd:restriction base="xsd:decimal">
+					<xsd:fractionDigits value="2"></xsd:fractionDigits>
+					<xsd:totalDigits value="8"></xsd:totalDigits>
+				</xsd:restriction>
+			</xsd:simpleType>
+			
+			<xsd:simpleType name="StartTypeValueDecimal">  
+				<xsd:restriction base="xsd:decimal">
+					<xsd:fractionDigits value="2"></xsd:fractionDigits>
+					<xsd:totalDigits value="9"></xsd:totalDigits>
+				</xsd:restriction>
+			</xsd:simpleType>
+			
+			<!-- Common Tag to send out error messages -->
+			<xsd:complexType name="ErrorType">
+				<xsd:sequence>
+					<xsd:element name="ErrorCode" type="xsd:string"/>
+					<xsd:element name="ErrorString" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:complexType>
+		</xsd:schema>		
+	</wsdl:types>
+
+	<wsdl:message name="EGUSAgreementUpdatesRequest">
+		<wsdl:part name="EGUSAgreementUpdatesRequest"	element="tns:EGUSAgreementUpdatesRequest">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="EGUSAgreementUpdatesResponse">
+		<wsdl:part name="EGUSAgreementUpdatesResponse"	element="tns:EGUSAgreementUpdatesResponse">
+		</wsdl:part>
+	</wsdl:message>
+
+	<wsdl:message name="EGUSExchangeResponse">
+		<wsdl:part name="EGUSExchangeResponse"	element="tns:EGUSExchangeResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="EGUSExchangeFirmRequest">
+		<wsdl:part name="EGUSExchangeFirmRequest"	element="tns:EGUSExchangeFirmRequest">
+		</wsdl:part>
+	</wsdl:message>
+
+	<wsdl:message name="EGUSExchangeProductGroupRequest">
+		<wsdl:part name="EGUSExchangeProductGroupRequest"	element="tns:EGUSExchangeProductGroupRequest">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="EGUSExchangeProductGroupResponse">
+		<wsdl:part name="EGUSExchangeProductGroupResponse"	element="tns:EGUSExchangeProductGroupResponse">
+		</wsdl:part>
+	</wsdl:message>
+	
+	<wsdl:message name="EGUSPartyRequest">
+		<wsdl:part element="tns:EGUSPartyRequest"	name="EGUSPartyRequest" />
+	</wsdl:message>
+	<wsdl:message name="EGUSPartyResponse">
+		<wsdl:part element="tns:EGUSPartyResponse"	name="EGUSPartyResponse" />
+	</wsdl:message>
+	
+	<wsdl:message name="EGUSExchangeRequest">
+		<wsdl:part name="EGUSExchangeRequest"	element="tns:EGUSExchangeRequest">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="EGUSExchangeFirmResponse">
+		<wsdl:part name="EGUSExchangeFirmResponse"	element="tns:EGUSExchangeFirmResponse">
+		</wsdl:part>
+	</wsdl:message>
+
+	<wsdl:message name="EGUSAgreementDetailsRequest">
+		<wsdl:part name="EGUSAgreementDetailsRequest"	element="agrDetails:EGUSAgreementDetailsRequest">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="EGUSAgreementDetailsResponse">
+		<wsdl:part name="EGUSAgreementDetailsResponse"	element="agrDetails:EGUSAgreementDetailsResponse">
+		</wsdl:part>
+	</wsdl:message>
+	
+	<wsdl:portType name="EGUSReference">
+		<wsdl:operation name="EGUSAgreementUpdates">
+			<wsdl:input message="tns:EGUSAgreementUpdatesRequest"></wsdl:input>
+			<wsdl:output message="tns:EGUSAgreementUpdatesResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="EGUSExchange">
+			<wsdl:input message="tns:EGUSExchangeRequest"></wsdl:input>
+			<wsdl:output message="tns:EGUSExchangeResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="EGUSExchangeProductGroup">
+			<wsdl:input message="tns:EGUSExchangeProductGroupRequest"></wsdl:input>
+			<wsdl:output message="tns:EGUSExchangeProductGroupResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="EGUSParty">
+			<wsdl:input message="tns:EGUSPartyRequest" />
+			<wsdl:output message="tns:EGUSPartyResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="EGUSExchangeFirm">
+			<wsdl:input message="tns:EGUSExchangeFirmRequest"></wsdl:input>
+			<wsdl:output message="tns:EGUSExchangeFirmResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="EGUSAgreementDetails">
+			<wsdl:input message="tns:EGUSAgreementDetailsRequest"></wsdl:input>
+			<wsdl:output message="tns:EGUSAgreementDetailsResponse"></wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+	
+	<wsdl:binding name="EGUSReferenceSOAP" type="tns:EGUSReference">
+		<soap:binding style="document"	transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="EGUSParty">
+			<soap:operation	soapAction="http://www.markit.com/EGUS/EGUSParty" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="EGUSExchange">
+			<soap:operation	soapAction="http://www.markit.com/EGUS/EGUSExchange" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="EGUSExchangeFirm">
+			<soap:operation	soapAction="http://www.markit.com/EGUS/EGUSExchangeFirm" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="EGUSExchangeProductGroup">
+			<soap:operation	soapAction="http://www.markit.com/EGUS/EGUSExchangeProductGroup" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="EGUSAgreementUpdates">
+			<soap:operation	soapAction="http://www.markit.com/EGUS/EGUSAgreementUpdates" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="EGUSAgreementDetails">
+			<soap:operation	soapAction="http://www.markitserv.com/2012/EGUS-AD-2-0" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="EGUSReference">
+		<wsdl:port binding="tns:EGUSReferenceSOAP"	name="EGUSReferenceSOAP">
+			<soap:address	location="https://fiaegus.uat.markit.com/soap/services/EGUSMessageService" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
