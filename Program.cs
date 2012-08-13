@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Net;
 using ConsoleApplication6.EgusReference;
 
@@ -11,8 +10,10 @@ namespace ConsoleApplication6
     {
         static void Main(string[] args)
         {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3;
+
             DateTime AfterRightNow = DateTime.Now.Add(new TimeSpan(1, 0, 0, 0, 0));
-            DateTime BeforeRightNow = DateTime.Now.Subtract(new TimeSpan(7, 0, 0, 0, 0));
+            DateTime BeforeRightNow = DateTime.Now.Subtract(new TimeSpan(100, 0, 0, 0, 0));
 
             string username = "";
             string password = "";
@@ -32,16 +33,7 @@ namespace ConsoleApplication6
                 proxy.ClientCredentials.UserName.Password = password;
                 var WCFResults = proxy.EGUSParty(wcf_party_request);
             }
-
-
-            // Web Reference Request
-            WebReference.ItemsChoiceType2[] MyItemNames3 = new WebReference.ItemsChoiceType2[] { WebReference.ItemsChoiceType2.fromDate, WebReference.ItemsChoiceType2.toDate };
-            WebReference.EGUSPartyRequest web_reference_request = new WebReference.EGUSPartyRequest() { Items = MyItems, ItemsElementName = MyItemNames3 };
-
-            using (WebReference.EGUSReference web_proxy = new WebReference.EGUSReference { Url = url, Credentials = MyNetworkCredential }) //, PreAuthenticate = true, UnsafeAuthenticatedConnectionSharing = true 
-            {
-                var r3 = web_proxy.EGUSParty(web_reference_request);
-            }
+           
         }
     }
 }
